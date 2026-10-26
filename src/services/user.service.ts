@@ -1,11 +1,16 @@
 import { ResponseError } from "../error/error.response.js";
 import { createUser, findUserByUsername } from "../models/user.model.js";
 import {
+  LoginRequest,
+  LoginResponseData,
   RegisterRequest,
   UserResponse,
+  toLoginUserResponse,
   toUserResponse,
 } from "../type/user.type.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { getJwtSecret } from "../lib/jwt.js";
 
 export const registerService = async (
   request: RegisterRequest,
@@ -29,4 +34,31 @@ export const registerService = async (
   });
 
   return toUserResponse(user);
+};
+
+export const loginService = async (
+  request: LoginRequest,
+): Promise<LoginResponseData> => {
+  // cek user in database
+  const user = await findUserByUsername(request.username);
+
+  // if username not found throw error
+  if (!user || !(await bcrypt.compare(request.password, user.password))) {
+    throw new ResponseError(
+      401,
+      "INVALID_CREDENTIAL",
+      "Username atau Password salah.",
+    );
+  } 
+
+  const token = jwt.sign({ sub: user.id }, getJwtSecret(), {
+    expiresIn: "15m",
+  });
+
+  return {
+    token_type: "Bearer",
+    access_token: token,
+    expires_in: 900,
+    data: toLoginUserResponse(user),
+  };
 };
