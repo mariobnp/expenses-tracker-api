@@ -20,7 +20,7 @@ const nameSchema = z
   .min(2, { message: "Nama minimal terdiri dari 2 karakter." })
   .max(50, { message: "Nama maksimal terdiri dari 50 karekter." })
   .regex(
-    /^[a-zA-R\s'.-]+$/,
+    /^[a-zA-Z\s'.-]+$/,
     "Nama hanya boleh berisi huruf, spasi, tanda petik ('), titik (.), dan tanda hubung (-)",
   );
 
