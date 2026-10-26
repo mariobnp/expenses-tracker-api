@@ -39,7 +39,7 @@ export const errorMiddleware = (
   return res.status(500).json({
     error: {
       code: "INTERNAL_SERVER_ERROR",
-      message: error.message || "Terjadi kesalahan server.",
+      message: "Terjadi kesalahan server.",
     },
   });
 };
