@@ -27,7 +27,7 @@ export type LoginResponseData = {
   token_type: "Bearer";
   access_token: string;
   expires_in: number;
-  data: LoginUserResponse;
+  user: LoginUserResponse;
 };
 
 export type RegisterResponse = ApiResponse<UserResponse>;
