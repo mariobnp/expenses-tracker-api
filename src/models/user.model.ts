@@ -7,3 +7,13 @@ export const findUserByUsername = (username: string) => {
     },
   });
 };
+
+export const createUser = (data: {
+  username: string;
+  name: string;
+  password: string;
+}) => {
+  return prisma.user.create({
+    data,
+  });
+};
